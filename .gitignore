@@ -107,6 +107,7 @@ venv.bak/
 # project stuff
 *.tar.gz
 data
+results
 images-HI
 images-OC
 models
