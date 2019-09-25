@@ -81,7 +81,7 @@ def main():
                "?ra={}"
                "&dec={}"
                "&width={}"
-               "&height={}".format(row.RAdeg_OC, row.DECdeg_OC, width, height))
+               "&height={}".format(row.RA, row.DEC, width, height))
         if not os.path.isfile(f'{opt.output}/{row.AGCNr}.jpg'):
             try:
                 img = skimage.io.imread(url)

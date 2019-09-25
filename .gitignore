@@ -107,8 +107,11 @@ venv.bak/
 # project stuff
 *.tar.gz
 data
+doc
 results
 images-other
+images-legacy
+images-xgass-legacy
 images-HI
 images-OC
 models
