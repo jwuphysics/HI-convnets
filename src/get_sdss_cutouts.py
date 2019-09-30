@@ -19,9 +19,10 @@ import sys
 import urllib
 
 # assuming that this is being run in the ${ROOT}/src directory
-PATH = os.path.abspath('..')
+PATH = os.path.abspath("..")
 
-class Printer():
+
+class Printer:
     """Print things to stdout on one line dynamically"""
 
     def __init__(self, data):
@@ -30,30 +31,32 @@ class Printer():
 
 
 def cmdline():
-    ''' Controls the command line argument handling for this little program.
-    '''
+    """ Controls the command line argument handling for this little program.
+    """
 
     # read in the cmd line arguments
-    USAGE = 'usage:\t %prog [options]\n'
+    USAGE = "usage:\t %prog [options]\n"
     parser = OptionParser(usage=USAGE)
 
     # add options
-    parser.add_option('--output',
-                      dest='output',
-                      default=f'{PATH}/images',
-                      help='Path to save image data')
-    parser.add_option('--width',
-                      dest='width',
-                      default=224,
-                      help='Default width of images')
-    parser.add_option('--height',
-                      dest='height',
-                      default=224,
-                      help='Default height of images')
-    parser.add_option('--cat',
-                       dest='cat',
-                       default=f'{PATH}/data/a100.code12.tab1.180315.csv',
-                       help='Catalog to get image names from.')
+    parser.add_option(
+        "--output",
+        dest="output",
+        default=f"{PATH}/images",
+        help="Path to save image data",
+    )
+    parser.add_option(
+        "--width", dest="width", default=224, help="Default width of images"
+    )
+    parser.add_option(
+        "--height", dest="height", default=224, help="Default height of images"
+    )
+    parser.add_option(
+        "--cat",
+        dest="cat",
+        default=f"{PATH}/data/a100.code12.tab1.180315.csv",
+        help="Catalog to get image names from.",
+    )
 
     (options, args) = parser.parse_args()
 
@@ -71,21 +74,23 @@ def main():
     height = opt.height
 
     # remove trailing slash in output path if it's there.
-    opt.output = opt.output.rstrip('\/')
+    opt.output = opt.output.rstrip("\/")
 
     # total number of images
     n_gals = df.shape[0]
 
     for row in df.itertuples():
-        url = ("http://skyserver.sdss.org/dr14/SkyserverWS/ImgCutout/getjpeg"
-               "?ra={}"
-               "&dec={}"
-               "&width={}"
-               "&height={}".format(row.RA, row.DEC, width, height))
-        if not os.path.isfile(f'{opt.output}/{row.AGCNr}.jpg'):
+        url = (
+            "http://skyserver.sdss.org/dr14/SkyserverWS/ImgCutout/getjpeg"
+            "?ra={}"
+            "&dec={}"
+            "&width={}"
+            "&height={}".format(row.RA, row.DEC, width, height)
+        )
+        if not os.path.isfile(f"{opt.output}/{row.AGCNr}.jpg"):
             try:
                 img = skimage.io.imread(url)
-                skimage.io.imsave(f'{opt.output}/{row.AGCNr}.jpg', img)
+                skimage.io.imsave(f"{opt.output}/{row.AGCNr}.jpg", img)
                 time.sleep(0.5)
             except urllib.error.HTTPError:
                 pass
@@ -93,7 +98,7 @@ def main():
         status = "{:.3f}% of {} completed.".format(current, n_gals)
         Printer(status)
 
-    print('')
+    print("")
 
 
 if __name__ == "__main__":
