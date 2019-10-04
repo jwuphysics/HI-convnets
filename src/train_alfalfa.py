@@ -23,8 +23,6 @@ from ranger import Ranger
 
 xGASS_stats = [tensor([-0.0169, -0.0105, -0.0004]), tensor([0.9912, 0.9968, 1.0224])]
 
-model = mxresnet34()
-
 tfms = get_transforms(
     do_flip=True,
     flip_vert=True,
@@ -39,23 +37,30 @@ def command_line():
     """ Controls the command line argument handling.
     """
 
-    # read in the cmd line arguments
-    USAGE = "usage:\t %prog [options]\n"
-    parser = OptionParser(usage=USAGE)
+    # read in the command line arguments
+    parser = OptionParser(usage="usage:\t %prog [options]\n)")
 
     # add options
-    parser.add_option("--seed", dest="seed", default=12345, help="random seed (int)")
-    parser.add_option("--sz", dest="sz", default=224, help="image size")
-    parser.add_option("--val-pct", dest="val_pct", default=0.2, help="validation percentage")
-    parser.add_option("--bs", dest="bs", default=32, help="batch size")
-    parser.add_option("--fp16", dest="mixed_precision", default=False, help="mixed precision")
-    parser.add_option("--n_epochs", dest="n_epochs", default=100, help="number of epochs")
-    parser.add_option("--lr", dest="lr", default=3e-2, help="maximum learning rate")
+    parser.add_option("--seed", dest="seed", type=int, default=12345, help="random seed (int)")
+    parser.add_option("--sz", dest="sz", type=int, default=224, help="image size")
+    parser.add_option("--val-pct", dest="val_pct", type=float, default=0.2, help="validation percentage")
+    parser.add_option("--bs", dest="bs", type=int, default=32, help="batch size")
+    parser.add_option("--precision", dest="precision", type=str, default="full", help="full or mixed precision")
+    parser.add_option("--n_epochs", dest="n_epochs", type=int, default=100, help="number of epochs")
+    parser.add_option("--lr", dest="lr", type=float, default=3e-2, help="maximum learning rate")
+    parser.add_option("--model", dest="model", type=str, default="mxresnet50", help="convnet architecture")
     parser.add_option(
-        "--all-properties", 
-        dest="all_properties", 
-        default=False, 
-        help="Load catalog with galaxy SFR and metallicity",
+        "--catalog", 
+        dest="catalog", 
+        default="fgas", 
+        help="Load catalog with only `fgas`, or `all` galaxy properties"
+    )
+    parser.add_option(
+        "--save", 
+        dest="save_fname", 
+        type=str, 
+        default="best_a40", 
+        help="destination of best model"
     )
 
     (options, args) = parser.parse_args()
@@ -81,7 +86,9 @@ if __name__ == "__main__":
     opt, args = command_line()
 
     # load DataBunch
-    df = load_df(all_properties=opt.all_properties)
+    all_properties = (opt.catalog == "all")
+    df = load_df(all_properties=all_properties)
+    print(f"Loaded `{opt.catalog}` catalog of length {len(df)}")
 
     src = (
         ImageList.from_df(
@@ -97,6 +104,20 @@ if __name__ == "__main__":
         .normalize(xGASS_stats)
     )
 
+    # select model
+    if opt.model in ["mxresnet18", "18"]:
+        model = mxresnet18()
+    elif opt.model in ["mxresnet34", "34"]:
+        model = mxresnet34()
+    elif opt.model in ["mxresnet50", "50"]:
+        model = mxresnet50()
+    elif opt.model in ["mxresnet101", "101"]:
+        model = mxresnet101()
+    elif opt.model in ["mxresnet152", "152"]:
+        model = mxresnet152()
+    else:
+        sys.exit("Please specify a valid model of the `mxresnet` variant")
+    
     # reformulate model to output single regression
     model[-1] = nn.Linear(model[-1].in_features, 1, bias=True).cuda()
 
@@ -111,10 +132,12 @@ if __name__ == "__main__":
         true_wd=True,
     )
     
-    if opt.mixed_precision:
+    if opt.precision == "mixed":
         learn.to_fp16()
-    else:
+    elif opt.precision == "full":
         learn.to_fp32()
+    else:
+        sys.exit("Please specify mixed or full floating-point precision.")
 
     # train and keep track of best model
     learn.fit_one_cycle(
