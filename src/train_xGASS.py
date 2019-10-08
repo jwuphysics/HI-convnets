@@ -1,7 +1,7 @@
 """
 John F. Wu
 
-Train a deep convnet to predict gas mass fraction using the ALFALFA a.40
+Train a deep convnet to predict gas mass fraction using the xGASS
 data set. Saves the best model in the `{PATH}/models` directory.
 """
 
@@ -50,16 +50,10 @@ def command_line():
     parser.add_option("--lr", dest="lr", type=float, default=3e-2, help="maximum learning rate")
     parser.add_option("--model", dest="model", type=str, default="mxresnet50", help="convnet architecture")
     parser.add_option(
-        "--catalog",
-        dest="catalog",
-        default="fgas",
-        help="Load catalog with only `fgas`, or `all` galaxy properties"
-    )
-    parser.add_option(
         "--save",
         dest="save_fname",
         type=str,
-        default="best_a40",
+        default="best_xGASS",
         help="destination of best model"
     )
 
@@ -68,16 +62,14 @@ def command_line():
     return options, args
 
 
-def load_df(all_properties):
-    """Load the dataframe containing gas mass fractions, and if
-    `all_properties` is set True, then cut on the HI sources that
-    also have SFRs and metallicities (from JHU/MPA catalogs).
+def load_df():
+    """Load the dataframe containing xGASS gas mass fractions.
     """
 
-    if all_properties:
-        return pd.read_csv(f"{PATH}/data/a40-SDSS_galaxy-properties.csv")
-    else:
-        return pd.read_csv(f"{PATH}/data/a40-SDSS_gas-frac.csv")
+    df = pd.read_csv(f"{PATH}/data/xGASS_representative_sample.csv")
+    df['logfgas'] = df.lgMHI - df.lgMstar
+
+    return df
 
 
 if __name__ == "__main__":
@@ -86,13 +78,12 @@ if __name__ == "__main__":
     opt, args = command_line()
 
     # load DataBunch
-    all_properties = (opt.catalog == "all")
-    df = load_df(all_properties=all_properties)
-    print(f"Loaded `{opt.catalog}` catalog of length {len(df)}")
+    df = load_df()
+    print(f"Loaded xGASS catalog of length {len(df)}")
 
     src = (
         ImageList.from_df(
-            df, path=PATH, folder="images-OC", suffix=".jpg", cols="AGCNr"
+            df, path=PATH, folder="images-xgass", suffix=".jpg", cols="GASS"
         )
         .split_by_rand_pct(opt.val_pct, seed=opt.seed)
         .label_from_df(cols=["logfgas"], label_cls=FloatList)
