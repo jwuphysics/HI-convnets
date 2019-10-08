@@ -14,12 +14,11 @@ from glob import glob
 from optparse import OptionParser
 import seaborn as sns
 
-PATH = os.path.dirname(os.path.abspath(__file__))
+PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(f"{PATH}/src")
 
 from mxresnet import *
 from ranger import Ranger
-
 
 xGASS_stats = [tensor([-0.0169, -0.0105, -0.0004]), tensor([0.9912, 0.9968, 1.0224])]
 
