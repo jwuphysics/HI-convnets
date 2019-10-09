@@ -49,6 +49,13 @@ def command_line():
     parser.add_option("--lr", dest="lr", type=float, default=3e-2, help="maximum learning rate")
     parser.add_option("--model", dest="model", type=str, default="mxresnet50", help="convnet architecture")
     parser.add_option(
+        "--environment", 
+        dest="env", 
+        type=str, 
+        default="True", 
+        help="Validate on isolated galaxies"
+    )
+    parser.add_option(
         "--save",
         dest="save_fname",
         type=str,
@@ -70,6 +77,13 @@ def load_df():
 
     return df
 
+def split_isolated(df):
+    """Adds a boolean column that is True if isolated, False if not.
+    """
+
+    df['is_valid'] = (df.env_code_B != 1)
+
+    return df
 
 if __name__ == "__main__":
 
@@ -80,13 +94,24 @@ if __name__ == "__main__":
     df = load_df()
     print(f"Loaded xGASS catalog of length {len(df)}")
 
-    src = (
-        ImageList.from_df(
-            df, path=PATH, folder="images-xgass", suffix=".jpg", cols="GASS"
+    # split train/validation by non-isolated/isolated objects (638/541)
+    if opt.env.lower() == "true":
+        df = split_isolated(df)
+        src = (
+            ImageList.from_df(
+                df, path=PATH, folder="images-xgass", suffix=".jpg", cols="GASS"
+            )
+            .split_by_df()
+            .label_from_df(cols=["logfgas"], label_cls=FloatList)
         )
-        .split_by_rand_pct(opt.val_pct, seed=opt.seed)
-        .label_from_df(cols=["logfgas"], label_cls=FloatList)
-    )
+    else:
+        src = (
+            ImageList.from_df(
+                df, path=PATH, folder="images-xgass", suffix=".jpg", cols="GASS"
+            )
+            .split_by_rand_pct(opt.val_pct, seed=opt.seed)
+            .label_from_df(cols=["logfgas"], label_cls=FloatList)
+        )
 
     data = (
         src.transform(tfms, size=opt.sz)
