@@ -52,7 +52,7 @@ def command_line():
         "--environment", 
         dest="env", 
         type=str, 
-        default="True", 
+        default="False", 
         help="Validate on isolated galaxies"
     )
     parser.add_option(
@@ -81,7 +81,7 @@ def split_isolated(df):
     """Adds a boolean column that is True if isolated, False if not.
     """
 
-    df['is_valid'] = (df.env_code_B != 1)
+    df['isolated'] = (df.env_code_B == 1)
 
     return df
 
@@ -99,15 +99,15 @@ if __name__ == "__main__":
         df = split_isolated(df)
         src = (
             ImageList.from_df(
-                df, path=PATH, folder="images-xgass", suffix=".jpg", cols="GASS"
+                df, path=PATH, folder="images-xGASS", suffix=".jpg", cols="GASS"
             )
-            .split_by_df()
+            .split_from_df(col='isolated') # isolated -> validation
             .label_from_df(cols=["logfgas"], label_cls=FloatList)
         )
     else:
         src = (
             ImageList.from_df(
-                df, path=PATH, folder="images-xgass", suffix=".jpg", cols="GASS"
+                df, path=PATH, folder="images-xGASS", suffix=".jpg", cols="GASS"
             )
             .split_by_rand_pct(opt.val_pct, seed=opt.seed)
             .label_from_df(cols=["logfgas"], label_cls=FloatList)
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         sys.exit("Please specify a valid model of the `mxresnet` variant")
 
     # reformulate model to output single regression
-    model[-1] = nn.Linear(model[-1].in_features, 1, bias=True).cuda()
+    model[-1] = nn.Linear(model[-1].in_features, 1, bias=True) #.cuda()
 
     # initialize Fastai learner
     learn = Learner(
@@ -155,8 +155,14 @@ if __name__ == "__main__":
         sys.exit("Please specify mixed or full floating-point precision.")
 
     # train and keep track of best model
-    learn.fit_one_cycle(
-        cyc_len=opt.n_epochs,
-        max_lr=opt.lr,
-        callbacks=[SaveModelCallback(learn, every="improvement", name=opt.save_fname)],
-    )
+    if (opt.save_fname is not None) or (opt.save_fname.lower() != "none"):
+        learn.fit_one_cycle(
+            cyc_len=opt.n_epochs,
+            max_lr=opt.lr,
+            callbacks=[SaveModelCallback(learn, every="improvement", name=opt.save_fname)],
+        )
+    else:
+        learn.fit_one_cycle(
+            cyc_len=opt.n_epochs,
+            max_lr=opt.lr,
+        )
