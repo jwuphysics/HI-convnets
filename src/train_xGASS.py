@@ -49,8 +49,8 @@ def command_line():
     parser.add_option("--lr", dest="lr", type=float, default=3e-2, help="maximum learning rate")
     parser.add_option("--model", dest="model", type=str, default="mxresnet50", help="convnet architecture")
     parser.add_option(
-        "--environment", 
-        dest="env", 
+        "--group", 
+        dest="group_env", 
         type=str, 
         default="False", 
         help="Validate on isolated galaxies"
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     print(f"Loaded xGASS catalog of length {len(df)}")
 
     # split train/validation by non-isolated/isolated objects (638/541)
-    if opt.env.lower() == "true":
+    if opt.group_env.lower() == "true":
         df = split_isolated(df)
         src = (
             ImageList.from_df(
@@ -155,14 +155,15 @@ if __name__ == "__main__":
         sys.exit("Please specify mixed or full floating-point precision.")
 
     # train and keep track of best model
-    if (opt.save_fname is not None) or (opt.save_fname.lower() != "none"):
+    if (opt.save_fname == "") or (opt.save_fname.lower() == "none"):
         learn.fit_one_cycle(
             cyc_len=opt.n_epochs,
             max_lr=opt.lr,
-            callbacks=[SaveModelCallback(learn, every="improvement", name=opt.save_fname)],
         )
     else:
         learn.fit_one_cycle(
             cyc_len=opt.n_epochs,
             max_lr=opt.lr,
+            callbacks=[SaveModelCallback(learn, every="improvement", name=opt.save_fname)],
         )
+        

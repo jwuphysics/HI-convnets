@@ -140,8 +140,15 @@ if __name__ == "__main__":
         sys.exit("Please specify mixed or full floating-point precision.")
 
     # train and keep track of best model
-    learn.fit_one_cycle(
-        cyc_len=opt.n_epochs,
-        max_lr=opt.lr,
-        callbacks=[SaveModelCallback(learn, every="improvement", name=opt.save_fname)],
-    )
+    if (opt.save_fname == "") or (opt.save_fname.lower() == "none"):
+        learn.fit_one_cycle(
+            cyc_len=opt.n_epochs,
+            max_lr=opt.lr,
+        )
+    else:
+        learn.fit_one_cycle(
+            cyc_len=opt.n_epochs,
+            max_lr=opt.lr,
+            callbacks=[SaveModelCallback(learn, every="improvement", name=opt.save_fname)],
+        )
+        
