@@ -1,10 +1,10 @@
-# HI-convnets
+# Connecting Optical Morphology, Environment, and HI Mass Fraction for Low-Redshift Galaxies Using Deep Learning
 
-## Predicting HI mass fractions using optical imaging
+## 
 
-A galaxy's cold gas content can determine its current and future star formation properties. Most of that cold gas in present-day galaxies is in the form of neutral atomic hydrogen, which radiates faintly through a 21 cm emission line. Since it is so difficult to observe this signal, many different heuristics have been developed in order to estimate the gas mass fraction (equivalent to a galaxy's gas mass normalized by its stellar mass). These proxies include, but are not limited to, simple [color-based methods](https://ui.adsabs.harvard.edu/abs/2004ApJ...611L..89K/abstract), [classical machine learning techniques](https://ui.adsabs.harvard.edu/abs/2018MNRAS.479.4509R/abstract), and [shallow neural networks](https://ui.adsabs.harvard.edu/abs/2017MNRAS.464.3796T/abstract). My work aims to improve existing approaches by also accounting for optical morphological information.
+A galaxy's cold gas content can determine its current and future star formation properties. Most of that cold gas in present-day galaxies is in the form of neutral atomic hydrogen (HI), which radiates weakly through a 21-cm emission line. Since it is so difficult to observe this signal, many different heuristics have been developed in order to estimate the HI mass fraction (equivalent to a galaxy's HI mass normalized by its stellar mass). This work aims to improve existing approaches by also accounting for optical morphological information.
 
-I use deep convolutional neural networks to process SDSS *gri* images (spanning 256 x 256 pixels, or roughly 100" x 100") of optical counterparts to HI detections in the local Universe (*cz* < 15,000 km/s). By using [data augmentation](https://ui.adsabs.harvard.edu/abs/2015MNRAS.450.1441D/abstract), a [one-cycle learning rate schedule](https://arxiv.org/abs/1803.09820), the [Rectified Adam optimizer](https://github.com/LiyuanLucasLiu/RAdam) ([paper](https://arxiv.org/abs/1908.03265)), and a [resnet-34](https://arxiv.org/abs/1512.03385) architecture ([+ bag of tricks](https://arxiv.org/abs/1812.01187)), **I can predict gas mass fractions to within 0.24 dex RMSE for the SDSS x ALFALFA data set**.
+We use deep convolutional neural networks to process SDSS *gri* images (spanning 224 x 224 pixels, or roughly 100" x 100") of optical counterparts to HI detections in low-redshift Universe (*z* < 0.05). By using [data augmentation](https://ui.adsabs.harvard.edu/abs/2015MNRAS.450.1441D/abstract), a [one-cycle learning rate schedule](https://arxiv.org/abs/1803.09820), the [Rectified Adam](https://arxiv.org/abs/1908.03265) + [LookAhead](https://arxiv.org/abs/1907.08610) optimizer, and [resnet-34](https://arxiv.org/abs/1512.03385) architecture ([+ bag of tricks](https://arxiv.org/abs/1812.01187) + [Mish activation function](https://arxiv.org/abs/1908.08681)), **we can predict mass fractions to within 0.25 dex RMSE for the SDSS x ALFALFA data set**.
 
 ## Usage
 
@@ -13,6 +13,8 @@ Download this repository by running
 git clone https://github.com/jwuphysics/HI-convnets.git
 cd HI-convnets
 ```
+
+Results can be replicated by evaluating the Jupyter notebooks in `notebook`, and/or by running the code in `src/train_alfalfa.py` and `src/train_xGASS.py`.
 
 ## Dependencies
 
@@ -24,7 +26,7 @@ conda install -c pytorch -c fastai fastai
 
 ## Data
 
-All data were queried from the [SDSS DR14 image cutout service](http://skyserver.sdss.org/dr14/en/help/docs/api.aspx#imgcutout) using a download script similar to the one in our [metallicity prediction deep convnet](https://github.com/jwuphysics/galaxy-cnns). Positions were taken from the ALFALFA [α.40 catalogs](http://egg.astro.cornell.edu/alfalfa/data/) ([Haynes et al. 2011](https://ui.adsabs.harvard.edu/abs/2011AJ....142..170H/abstract)) and [xGASS catalogs](http://xgass.icrar.org/data.html).
+All data were queried from the [SDSS DR14 image cutout service](http://skyserver.sdss.org/dr14/en/help/docs/api.aspx#imgcutout) using a download script similar to the one in our [metallicity prediction deep convnet](https://github.com/jwuphysics/galaxy-cnns). See, for example, `src/get_sdss_cutouts.py`. Positions were taken from the ALFALFA [α.40 catalogs](http://egg.astro.cornell.edu/alfalfa/data/) ([Haynes et al. 2011](https://ui.adsabs.harvard.edu/abs/2011AJ....142..170H/abstract)) and [xGASS catalogs](http://xgass.icrar.org/data.html).
 
 ## Acknowledgments
 
