@@ -6,6 +6,8 @@ A galaxy's cold gas content can determine its current and future star formation 
 
 We use deep convolutional neural networks to process SDSS *gri* images (spanning 224 x 224 pixels, or roughly 100" x 100") of optical counterparts to HI detections in low-redshift Universe (*z* < 0.05). By using [data augmentation](https://ui.adsabs.harvard.edu/abs/2015MNRAS.450.1441D/abstract), a [one-cycle learning rate schedule](https://arxiv.org/abs/1803.09820), the [Rectified Adam](https://arxiv.org/abs/1908.03265) + [LookAhead](https://arxiv.org/abs/1907.08610) optimizer, and [resnet-34](https://arxiv.org/abs/1512.03385) architecture ([+ bag of tricks](https://arxiv.org/abs/1812.01187) + [Mish activation function](https://arxiv.org/abs/1908.08681)), **we can predict mass fractions to within 0.25 dex RMSE for the SDSS x ALFALFA data set**.
 
+Results can be found in our paper: https://arxiv.org/abs/2001.00018
+
 ## Usage
 
 Download this repository by running
