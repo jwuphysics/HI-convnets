@@ -107,7 +107,7 @@ venv.bak/
 # project stuff
 *.tar.gz
 data
-doc
+doc/paper*
 results
 images-other
 images-legacy
