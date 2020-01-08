@@ -108,6 +108,7 @@ venv.bak/
 *.tar.gz
 data
 doc/paper*
+talk_figures
 results
 images-other
 images-legacy
