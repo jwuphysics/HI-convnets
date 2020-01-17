@@ -1,5 +1,14 @@
 # HI-convnets
 
+
+.. image:: https://img.shields.io/badge/ADS-2020arXiv200100018W-blue.svg
+    :target: https://ui.adsabs.harvard.edu/abs/2020arXiv200100018W/abstract
+    :alt: NASA/ADS paper
+
+.. image:: https://img.shields.io/badge/arXiv-2001.00018-orange.svg
+    :target: https://arxiv.org/abs/2001.00018
+    :alt: arXiv paper
+
 ![](doc/results-example.jpg)
 
 ## Connecting Optical Morphology, Environment, and HI Mass Fraction for Low-Redshift Galaxies Using Deep Learning
@@ -36,6 +45,30 @@ conda install -c pytorch -c fastai fastai
 ## Data
 
 All data were queried from the [SDSS DR14 image cutout service](http://skyserver.sdss.org/dr14/en/help/docs/api.aspx#imgcutout) using a download script similar to the one in our [metallicity prediction deep convnet](https://github.com/jwuphysics/galaxy-cnns). See, for example, `src/get_sdss_cutouts.py`. Positions were taken from the ALFALFA [α.40 catalogs](http://egg.astro.cornell.edu/alfalfa/data/) ([Haynes et al. 2011](https://ui.adsabs.harvard.edu/abs/2011AJ....142..170H/abstract)) and [xGASS catalogs](http://xgass.icrar.org/data.html).
+
+## Citation
+
+```
+@ARTICLE{2020arXiv200100018W,
+       author = {{Wu}, John F.},
+        title = "{Connecting optical morphology, environment, and HI mass fraction for low-redshift galaxies using deep learning}",
+      journal = {arXiv e-prints},
+     keywords = {Astrophysics - Astrophysics of Galaxies, Astrophysics - Instrumentation and Methods for Astrophysics},
+         year = "2019",
+        month = "Dec",
+          eid = {arXiv:2001.00018},
+        pages = {arXiv:2001.00018},
+archivePrefix = {arXiv},
+       eprint = {2001.00018},
+ primaryClass = {astro-ph.GA},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2020arXiv200100018W},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+```
+
+## Contact
+
+If you have any questions or comments, please reach out via [email](mailto:jfwu@jhu.edu)!
 
 ## Acknowledgments
 
