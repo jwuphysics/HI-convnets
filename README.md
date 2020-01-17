@@ -1,13 +1,7 @@
 # HI-convnets
 
-
-.. image:: https://img.shields.io/badge/ADS-2020arXiv200100018W-blue.svg
-    :target: https://ui.adsabs.harvard.edu/abs/2020arXiv200100018W/abstract
-    :alt: NASA/ADS paper
-
-.. image:: https://img.shields.io/badge/arXiv-2001.00018-orange.svg
-    :target: https://arxiv.org/abs/2001.00018
-    :alt: arXiv paper
+![https://ui.adsabs.harvard.edu/abs/2020arXiv200100018W/abstract](https://img.shields.io/badge/ADS-2020arXiv200100018W-blue.svg)
+![https://arxiv.org/abs/2001.00018](https://img.shields.io/badge/arXiv-2001.00018-orange.svg)
 
 ![](doc/results-example.jpg)
 
