@@ -1,7 +1,7 @@
 # HI-convnets
 
-![https://ui.adsabs.harvard.edu/abs/2020arXiv200100018W/abstract](https://img.shields.io/badge/ADS-2020arXiv200100018W-blue.svg)
-![https://arxiv.org/abs/2001.00018](https://img.shields.io/badge/arXiv-2001.00018-orange.svg)
+<a href="https://ui.adsabs.harvard.edu/abs/2020arXiv200100018W/abstract">![](https://img.shields.io/badge/ADS-2020arXiv200100018W-blue.svg)</a>
+<a href="https://arxiv.org/abs/2001.00018">![](https://img.shields.io/badge/arXiv-2001.00018-orange.svg)</a>
 
 ![](doc/results-example.jpg)
 
