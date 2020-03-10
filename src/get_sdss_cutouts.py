@@ -1,11 +1,11 @@
 """
 John F. Wu (2019)
-Initially based on Steven Boada's script to get gri imaging for SDSS 
+Initially based on Steven Boada's script to get gri imaging for SDSS
 spectroscopic targets.
 
 Now fetches gri imaging for the alpha.100 ALFALFA detections.
 
-Default size is now 224x224 (ImageNet-inspired) and we do not rescale 
+Default size is now 224x224 (ImageNet-inspired) and we do not rescale
 the pixel sizes from the native SDSS resolution.
 """
 
@@ -42,7 +42,7 @@ def cmdline():
     parser.add_option(
         "--output",
         dest="output",
-        default=f"{PATH}/images",
+        default=f"{PATH}/images-nibles",
         help="Path to save image data",
     )
     parser.add_option(
@@ -54,7 +54,7 @@ def cmdline():
     parser.add_option(
         "--cat",
         dest="cat",
-        default=f"{PATH}/data/a100.code12.tab1.180315.csv",
+        default=f"{PATH}/data/NIBLES_data.csv",
         help="Catalog to get image names from.",
     )
 
@@ -85,15 +85,15 @@ def main():
             "?ra={}"
             "&dec={}"
             "&width={}"
-            "&height={}".format(row.RA, row.DEC, width, height)
+            "&height={}".format(row.ra, row.dec, width, height)
         )
-        if not os.path.isfile(f"{opt.output}/{row.AGCNr}.jpg"):
-            try:
-                img = skimage.io.imread(url)
-                skimage.io.imsave(f"{opt.output}/{row.AGCNr}.jpg", img)
-                time.sleep(0.5)
-            except urllib.error.HTTPError:
-                pass
+        if not os.path.isfile(f"{opt.output}/{row.nibles_id}.jpg"):
+            #try:
+            img = skimage.io.imread(url)
+            skimage.io.imsave(f"{opt.output}/{row.nibles_id}.jpg", img)
+            time.sleep(0.03)
+#            except urllib.error.HTTPError:
+#                pass
         current = row.Index / n_gals * 100
         status = "{:.3f}% of {} completed.".format(current, n_gals)
         Printer(status)
