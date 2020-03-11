@@ -88,12 +88,12 @@ def main():
             "&height={}".format(row.ra, row.dec, width, height)
         )
         if not os.path.isfile(f"{opt.output}/{row.nibles_id}.jpg"):
-            #try:
-            img = skimage.io.imread(url)
-            skimage.io.imsave(f"{opt.output}/{row.nibles_id}.jpg", img)
-            time.sleep(0.03)
-#            except urllib.error.HTTPError:
-#                pass
+            try:
+                img = skimage.io.imread(url)
+                skimage.io.imsave(f"{opt.output}/{row.nibles_id}.jpg", img)
+                time.sleep(0.03)
+            except urllib.error.HTTPError:
+                pass
         current = row.Index / n_gals * 100
         status = "{:.3f}% of {} completed.".format(current, n_gals)
         Printer(status)
