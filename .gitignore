@@ -110,10 +110,5 @@ data
 doc/paper*
 talk_figures
 results
-images-other
-images-legacy
-images-xGASS
-images-xGASS-legacy
-images-HI
-images-OC
+images*
 models
