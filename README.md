@@ -1,6 +1,6 @@
 # HI-convnets
 
-<a href="https://ui.adsabs.harvard.edu/abs/2020arXiv200100018W/abstract">![](https://img.shields.io/badge/ADS-2020arXiv200100018W-blue.svg)</a>
+<a href="https://img.shields.io/badge/ADS-2020ApJ...900..142-blue.svg">![](https://img.shields.io/badge/ADS-2020ApJ...900..142-blue.svg)</a>
 <a href="https://arxiv.org/abs/2001.00018">![](https://img.shields.io/badge/arXiv-2001.00018-orange.svg)</a>
 
 ![](doc/gradcam-example.png)
@@ -11,7 +11,7 @@ A galaxy's cold gas content can determine its current and future star formation 
 
 We use deep convolutional neural networks to encode SDSS *gri* images (spanning 224 x 224 pixels, or roughly 100" x 100") of optical counterparts to HI detections in low-redshift Universe. We can predict HI mass fractions to within 0.23 dex RMSE for the SDSS x ALFALFA data set using imaging alone. When the CNN is also used for pattern recognition, the combined result outperforms all other machine learning regression methods (e.g., as low as 0.20 dex scatter for an independent ALFALFA data set).
 
-Results can be found in the paper: https://arxiv.org/abs/2001.00018
+Results can be found in the paper: see [ADS](https://ui.adsabs.harvard.edu/abs/2020ApJ...900..142W/abstract) or [arXiv](https://arxiv.org/abs/2001.00018) link.
 
 ## Usage
 
@@ -36,19 +36,22 @@ Imaging data were queried from the [SDSS DR14 image cutout service](http://skyse
 ## Citation
 
 ```
-@ARTICLE{2020arXiv200100018W,
+@ARTICLE{2020ApJ...900..142W,
        author = {{Wu}, John F.},
-        title = "{Connecting optical morphology, environment, and HI mass fraction for low-redshift galaxies using deep learning}",
-      journal = {arXiv e-prints},
-     keywords = {Astrophysics - Astrophysics of Galaxies, Astrophysics - Instrumentation and Methods for Astrophysics},
-         year = "2019",
-        month = "Dec",
-          eid = {arXiv:2001.00018},
-        pages = {arXiv:2001.00018},
+        title = "{Connecting Optical Morphology, Environment, and H I Mass Fraction for Low-redshift Galaxies Using Deep Learning}",
+      journal = {\apj},
+     keywords = {Galaxies, Galaxy evolution, Galaxy processes, Galaxy environments, Interstellar atomic gas, Interstellar medium, Astronomy data analysis, Astronomy data modeling, Astronomy data visualization, Convolutional neural networks, Neural networks, 573, 594, 614, 2029, 833, 847, 1858, 1859, 1968, 1938, 1933, Astrophysics - Astrophysics of Galaxies, Astrophysics - Instrumentation and Methods for Astrophysics},
+         year = 2020,
+        month = sep,
+       volume = {900},
+       number = {2},
+          eid = {142},
+        pages = {142},
+          doi = {10.3847/1538-4357/abacbb},
 archivePrefix = {arXiv},
        eprint = {2001.00018},
  primaryClass = {astro-ph.GA},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2020arXiv200100018W},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2020ApJ...900..142W},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 ```
